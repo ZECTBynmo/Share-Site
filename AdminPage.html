@@ -1,0 +1,84 @@
+<!-- jQuery -->
+<script src="jquery-1.7.1.min.js" type="text/javascript"></script>
+<link type="text/css" href="jquery-ui/css/ui-custom01/jquery-ui-1.8.18.custom.css" rel="Stylesheet" />	
+<script type="text/javascript" src="jquery-ui/js/jquery-ui-1.8.18.custom.min.js"></script>
+
+<script type = "text/javascript">
+
+	$(document).ready(function () {
+		// Setup Jquery buttons for login
+		$("#submitButton").button({});
+	});
+
+	// Setup Jquery buttons for login
+	$("#submitButton").button({});
+
+	// Note: Like all Javascript password scripts, this is hopelessly insecure as the user can see 
+	// the valid usernames/passwords and the redirect url simply with View Source.  
+	// And the user can obtain another three tries simply by refreshing the page.  
+	// So do not use for anything serious!
+
+	var count = 2;
+	function validate() {
+		var un = document.myform.username.value;
+		var pw = document.myform.pword.value;
+		var valid = false;
+
+		var unArray = ["Mike", "Phil"];  // as many as you like - no comma after final entry
+		var pwArray = ["poopoo", "poopoo"];  // the corresponding passwords;
+		
+		//jQuery.get( "/validateAdminLogin", {id: CONFIG.id, text: msg}, function (data) { }, "json" );
+
+		for (var i=0; i <unArray.length; i++) {
+			if ((un == unArray[i]) && (pw == pwArray[i])) {
+				valid = true;
+				break;
+			}
+		}
+
+		if( valid ) {
+			alert ("Login was successful");
+			hideLoginUI();
+			return false;
+		}
+
+		var t = " tries";
+		if (count == 1) {t = " try"}
+
+		if (count >= 1) {
+			alert ("Invalid username and/or password.  You have " + count + t + " left.");
+			document.myform.username.value = "";
+			document.myform.pword.value = "";
+			setTimeout("document.myform.username.focus()", 25);
+			setTimeout("document.myform.username.select()", 25);
+			count --;
+		} else {
+			alert ("Still incorrect! You have no more tries left!");
+			document.myform.username.value = "No more tries allowed!";
+			document.myform.pword.value = "";
+			document.myform.username.disabled = true;
+			document.myform.pword.disabled = true;
+			return false;
+		}
+	}
+	
+	function hideLoginUI() {
+		$("#loginDisplay").hide();
+	}
+
+</script>
+
+<form name = "myform">
+	<div id="loginDisplay" align="center">
+		<img src="http://openclipart.org/people/darth_schmoo/admin_tools.svg" align="middle" alt="Smiley face"/> 
+		<p>ENTER USER NAME 
+			<input type="text" name="username">
+		</p>
+		<p>ENTER PASSWORD 
+			<input type="password" name="pword">
+		</p>
+		<p>
+			<input id="submitButton" type="button" value="I'm totally legit, trust me" name="Submit" onclick= "validate()">
+		</p>
+	</div>
+</form>
